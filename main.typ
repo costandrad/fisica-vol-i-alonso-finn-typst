@@ -2,9 +2,9 @@
 
 #show: template.with(
   book: (
-    title: [Título do Livro],
+    title: [Física: Volume I - Mecânica],
     author: (
-      long: [Nome Sobrenome],
+      long: [Marcelo Alonso & Edward Finn],
       short: [Sobrenome, N.]
     )
   ),
@@ -13,7 +13,6 @@
 
 
 
-#include "chapters/chapther-01.typ"
 #include "chapters/chapther-02.typ"
 #include "chapters/chapther-03.typ"
 #include "chapters/chapther-04.typ"
