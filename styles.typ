@@ -1,28 +1,33 @@
 #let primary-color = rgb("#f00024")
 
-#let sci-fmt(number, precision: 3) = {
+#let fmt(number, precision: 3,  sci: true) = {
   if number == 0 {
     return $0$
   }
+
+  let multiplier = calc.pow(10.0, precision)
+  if sci==false {
+    let result = calc.floor(number * multiplier) / multiplier
+    return str(result).replace(".", ",")
+  }
+
   let expoent = calc.floor(calc.ln(calc.abs(number)) / calc.ln(10))
 
   let coefficient = number / (calc.pow(10.0, expoent))
 
-  let multiplier = calc.pow(10.0, precision)
-
   let rounded-coefficient = calc.round(coefficient * multiplier) / multiplier
 
-
-
-  let expoent-str = str(expoent).replace(".", ",")
   let coefficient-str = str(rounded-coefficient).replace(".", ",")
 
   if expoent == 0 {
     return $#coefficient-str$
   }
 
-  $#coefficient-str dot 10^(#expoent-str)$
+  let expoent-str = str(expoent).replace(".", ",")
+  
+  return $#coefficient-str dot 10^(#expoent-str)$
 }
+
 
 #let mkcover(book-title, book-author, author, primary-color) = [
   #set page(margin:20pt, fill: white)
@@ -111,7 +116,15 @@
 
 #let solution(body) = {
   set par(first-line-indent: 0pt)
-  text(weight: "bold", fill: primary-color)[Solução:]
+  box(
+    stroke: 1pt+primary-color,
+    radius: 3pt,
+    width: 2cm, height: 0.6cm
+  )[
+    #set align(center+ horizon)
+    #text(weight: "medium", fill: primary-color)[Solução]
+  ]
+  
 
   linebreak()
   linebreak()
@@ -206,6 +219,7 @@
   )
 
   //set math.equation(numbering: "(1)", number-align: bottom)
+
 
   // 🧭 Numeração de seções e listas
   set heading(numbering: "1.1.")
