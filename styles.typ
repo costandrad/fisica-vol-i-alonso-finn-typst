@@ -226,7 +226,7 @@
   show heading: set text(size: 12pt, fill: primary-color)
   show heading.where(): it => custom-headings(it)
   set list(marker: text(primary-color)[-])
-    set enum(
+  set enum(
     numbering: it => context {
       let headings = counter(heading).get()
       let sec = headings.at(0)

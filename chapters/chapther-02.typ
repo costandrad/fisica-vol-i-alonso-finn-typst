@@ -75,5 +75,18 @@
      
   ])
 
++ Na Seç. 2.3 foi mencionado que o quilograma poderia ser definido como sendo igual à mass de $5,0188 times 10^(25)$ átomos do isótopo $attach("C", tl: 12)$, cuja massa é definida como sendo exatamentde $12,0000 " u"$. Verifique se essa definição é compatível com o valor de $"u"$ dado no Prob. 2.1.
+
+  #let c-ma-u = 12.0000
+  #let n-atomos-c = 5.0188e25
+  #let u = 1/ (c-ma-u * n-atomos-c)
+  #solution([
+    $
+      m_("kg") = N dot m_("u")  arrow.double m_("u") = frac(m_("kg"), N) &arrow.double #fmt(c-ma-u, precision: 5, sci: false) " u" = frac(1 "kg", #fmt(n-atomos-c, precision: 4))\
+      &arrow.double 1 "u" = frac(1, #fmt(c-ma-u, sci: false) dot #fmt(n-atomos-c, precision: 5)) "kg"\
+      &arrow.double 1 "u" = #fmt(u, precision: 4) ""
+    $
+  ])
+
 
 
