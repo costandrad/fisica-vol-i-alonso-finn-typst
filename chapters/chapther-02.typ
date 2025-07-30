@@ -88,5 +88,99 @@
     $
   ])
 
++ Considere as moléculas de hidrogênio, de oxigênio e de nitrogênio, cada uma delas composta por dois átomos idênticos. Calcule o número de moléculas de cada um desses gases, nas condições normais de pressão e temperatura (TPN) existentes em $1 " m"^3$. Use os valores das desnidades relativas dadas na Tab. 2.2. Faça uma extensão do seu cálculo que seja válida para outros gases. Qual é a conclusão geral que você poderia tirar dos seus resultados?
+  
+  #solution([
+    // Massa atômica do nitrogênio
+    #let n-ma-u = 14.0067
+    // Densidade da água
+    #let rho-h2o = 1e3 // kg/m^3
+    // Densidades relativas
+    #let gamma-h2 = 8.988e-5
+    #let gamma-o2 = 1.42904e-3 
+    #let gamma-n2 = 1.25055e-3 
+    // Densidades absolutas em kg/m^3
+    #let rho-h2 = gamma-h2 * rho-h2o
+    #let rho-o2 = gamma-o2 * rho-h2o
+    #let rho-n2 = gamma-n2 * rho-h2o
+    // Massa molecular (mm) da cada gás em unidades de massa atômica
+    #let h2-mm-u = 2 * h-ma-u
+    #let o2-mm-u = 2 * o-ma-u
+    #let n2-mm-u = 2 * n-ma-u
+    // Massa molecular (mm) de cada gás em kg
+    #let h2-mm-kg = h2-mm-u * u
+    #let o2-mm-kg = o2-mm-u * u
+    #let n2-mm-kg = n2-mm-u * u
+    // Volume (m^3)
+    #let v = 1
+    // Quantidade de moléculas em 1 metro cúbico
+    #let n-h2 = (gamma-h2 * rho-h2o * v)/h2-mm-kg 
+    #let n-o2 = (gamma-o2 * rho-h2o * v)/o2-mm-kg 
+    #let n-n2 = (gamma-n2 * rho-h2o * v)/n2-mm-kg 
+
+    De forma geral, seja $rho = gamma dot rho_(H_2O)$ a densidade absoluta de uma substância, cuja densidade relativa em relação à água ($H_2O$) é igual a $gamma$. Em um dado volume $V$, a massa dessa substância é:
+
+    $
+      M = rho dot V\ M = (gamma dot rho_(H_2O)) dot V
+    $
+    Por outro lado, sabendo que tal substância é composta por $N$ moléculas, cada uma com massa $m$, então,
+
+    $
+      M = (gamma dot rho_(H_2O)) dot V &arrow.double N dot m  = (gamma dot rho_(H_2O)) dot V\
+      &arrow.double N = frac((gamma dot rho_(H_2O)) dot V, m)
+    $ 
+
+    Podemos aplicar a fórmula acima para determinar a quantidade de moléculas de cada gás presentes em um volume $V = 1 "m"^3$.
+    - Hidrogênio
+
+    A massa de cada molécula de Hidrogênio é:
+    $
+      m_(H_2) = 2 m_H = 2 dot (#fmt(h-ma-u, precision: 5) "u") = #fmt(h2-mm-u, precision: 5) "u"\
+      m_(H_2) = #fmt(h2-mm-u, precision: 5) "u" dot frac(#fmt(u, precision: 4), 1 " u") \
+      m_(H_2) = #fmt(h2-mm-kg) "kg"
+    $
+
+    Sabendo que a densidade relativa do Hidrogênio em relação à água ($rho_(H_2O) = #fmt(rho-h2o, sci: false) " kg/m"^3$) é $gamma_(H_2) = #fmt(gamma-h2)$, então, quantidade de moléculas no volume $V = 1 "m"^3$ é igual a:
+    $
+      N_(H_2) = frac((gamma_(H_2) dot rho_(H_2O)) dot V, m_(H_2)) = frac((#fmt(gamma-h2) dot #fmt(rho-h2o, sci: false)) dot 1, #fmt(h2-mm-kg)) = #fmt(n-h2, precision: 2) " moléculas"
+    $
+
+  - Oxigênio
+
+  A massa molecular do oxigênio é:
+  $
+    m_(O_2) = 2 dot m_O = 2 dot (#fmt(o-ma-u, sci: false, precision: 5) "u") = #fmt(o2-mm-u, sci: false) "u"\
+    m_(O_2) = #fmt(o2-mm-u, sci: false) "u" dot frac(#fmt(u, precision: 4), 1" u")\
+    m_(O_2) = #fmt(o2-mm-kg) "kg"
+  $
+
+  Sendo $gamma_(O_2) = #fmt(gamma-o2, precision: 6)$ a densidade relativa do oxigênio, então a quantidade de moéculas presentes em $1 "m"^3$ é:
+  $
+    N_(O_2) = frac((gamma_(O_2) dot rho_(H_2O)) dot V, m_(O_2)) = frac((#fmt(gamma-o2, precision: 6) dot #fmt(rho-h2o, sci: false)) dot #fmt(v), #fmt(o2-mm-kg)) = #fmt(n-o2, precision: 2) "moléculas"
+  $
+
+  - Nitrogênio
+
+  A massa molecular do nitrogênio é:
+  $
+    m_(N_2) = 2 dot m_N = 2 dot (#fmt(n-ma-u, sci: false, precision: 5) "u") = #fmt(n2-mm-u, sci: false) "u"\
+    m_(N_2) = #fmt(n2-mm-u, sci: false) "u" dot frac(#fmt(u, precision: 4), 1" u")\
+    m_(N_2) = #fmt(n2-mm-kg) "kg"
+  $
+
+  Sendo $gamma_(N_2) = #fmt(gamma-n2, precision: 6)$ a densidade relativa do oxigênio, então a quantidade de moéculas presentes em $1 "m"^3$ é:
+  $
+    N_(N_2) = frac((gamma_(N_2) dot rho_(H_2O)) dot V, m_(N_2)) = frac((#fmt(gamma-n2, precision: 6) dot #fmt(rho-h2o, sci: false)) dot #fmt(v), #fmt(n2-mm-kg)) = #fmt(n-n2, precision: 2) "moléculas"
+  $
+
+  Podemos concluir que a quantidade de moléculas em determinado volume independe do tipo de gás.
+
+
+
+
+    
+
+  ])
+
 
 
