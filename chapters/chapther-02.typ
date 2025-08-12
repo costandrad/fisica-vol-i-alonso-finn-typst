@@ -29,6 +29,11 @@
 #let o2-mm-u = 2 * o-ma-u
 #let n2-mm-u = 2 * n-ma-u
 
+// Massa molecular (mm) da cada gás em kg
+#let h2-mm-kg = 2 * h-ma-u * uma
+#let o2-mm-kg = 2 * o-ma-u * uma
+#let n2-mm-kg = 2 * n-ma-u * uma
+
 + As massas atômicas, representadas na Tab A.1, são expressas em _unidades de massa atômica_, abreviadas por $"u"$. $1 "u"$ é igual a $1,6604 times 10^(-27)$ kg. Calcule, em quilogramas e em gramas, as massas de
 
   #set enum(numbering: "(a)")
@@ -248,5 +253,18 @@
         N_("O"_2)/V = 0,2 dot N_(a r)/V = 0,2 dot #fmt(n-ar-1cm3) "moléculas"/"cm"^3 = #fmt(n-o2-1cm3) " " "moléculas"/"cm"^3\
         N_("N"_2)/V = 0,8 dot N_(a r)/V = 0,8 dot #fmt(n-ar-1cm3) "moléculas"/"cm"^3 = #fmt(n-n2-1cm3) " " "moléculas"/"cm"^3\
       $
+  ])
+
++ A densidade do gás interestelar na nossa galáxia é avaliada em cerca de $10^(-21) "kg" dot "m"^(-3)$. Admitindo-se que esse gás é constituído principalmente de hidrogênio, avalie o número de átomos de hidrogênio por $"cm"^3$. Compare esse resultado com o correspondente obtido para o ar nas condições TPN (Prob. 2.5).
+
+  #solution([
+    #let n-gas-1m3 = rho-h2 / h2-mm-kg
+    #let n-gas-1cm3 = n-gas-1m3 * 1e-6
+    $
+      rho_("H"_2) = M/V arrow.double frac(N dot m_("H"_2), V) arrow.double N/V = &frac(rho_("H"_2), m_("H"_2)) = frac(#fmt(rho-h2) "kg"/"m"^3, #fmt(2 * h2-mm-kg) "kg"/"molécula")\
+      &frac(rho_("H"_2), m_("H"_2)) = #fmt(n-gas-1m3) "moléculas/m"^3\
+      &frac(rho_("H"_2), m_("H"_2)) = #fmt(n-gas-1m3) "moléculas/m"^3 dot (frac( 1"m"^3, 10^6 "cm"^3))\
+      &frac(rho_("H"_2), m_("H"_2)) = #fmt(n-gas-1cm3) "moléculas/cm"^3
+    $
   ])
 
