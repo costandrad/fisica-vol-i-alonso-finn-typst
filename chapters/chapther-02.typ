@@ -12,6 +12,23 @@
 #let rho-h2o-si = 1000 // No SI ou seja, em quilograma por metro cúbico 
 #let rho-h2o = 1 // grama por centímetro cúbico    
 
+// Massa atômica do nitrogênio
+#let n-ma-u = 14.0067
+// Densidade da água
+#let rho-h2o = 1e3 // kg/m^3
+// Densidades relativas
+#let gamma-h2 = 8.988e-5
+#let gamma-o2 = 1.42904e-3 
+#let gamma-n2 = 1.25055e-3 
+// Densidades absolutas em kg/m^3
+#let rho-h2 = gamma-h2 * rho-h2o
+#let rho-o2 = gamma-o2 * rho-h2o
+#let rho-n2 = gamma-n2 * rho-h2o
+// Massa molecular (mm) da cada gás em unidades de massa atômica
+#let h2-mm-u = 2 * h-ma-u
+#let o2-mm-u = 2 * o-ma-u
+#let n2-mm-u = 2 * n-ma-u
+
 + As massas atômicas, representadas na Tab A.1, são expressas em _unidades de massa atômica_, abreviadas por $"u"$. $1 "u"$ é igual a $1,6604 times 10^(-27)$ kg. Calcule, em quilogramas e em gramas, as massas de
 
   #set enum(numbering: "(a)")
@@ -88,7 +105,7 @@
     $
   ])
 
-+ Considere as moléculas de hidrogênio, de oxigênio e de nitrogênio, cada uma delas composta por dois átomos idênticos. Calcule o número de moléculas de cada um desses gases, nas condições normais de pressão e temperatura (TPN) existentes em $1 " m"^3$. Use os valores das desnidades relativas dadas na Tab. 2.2. Faça uma extensão do seu cálculo que seja válida para outros gases. Qual é a conclusão geral que você poderia tirar dos seus resultados?
++ Considere as moléculas de hidrogênio, de oxigênio e de nitrogênio, cada uma delas composta por dois átomos idênticos. Calcule o número de moléculas de cada um desses gases, nas condições normais de pressão e temperatura (TPN) existentes em $1 " m"^3$. Use os valores das densidades relativas dadas na Tab. 2.2. Faça uma extensão do seu cálculo que seja válida para outros gases. Qual é a conclusão geral que você poderia tirar dos seus resultados?
   
   #solution([
     // Massa atômica do nitrogênio
@@ -108,8 +125,8 @@
     #let o2-mm-u = 2 * o-ma-u
     #let n2-mm-u = 2 * n-ma-u
     // Massa molecular (mm) de cada gás em kg
-    #let h2-mm-kg = h2-mm-u * u
-    #let o2-mm-kg = o2-mm-u * u
+    #let h2-mm-kg = h2-mm-u * uma
+    #let o2-mm-kg = o2-mm-u * uma
     #let n2-mm-kg = n2-mm-u * u
     // Volume (m^3)
     #let v = 1
@@ -174,13 +191,62 @@
   $
 
   Podemos concluir que a quantidade de moléculas em determinado volume independe do tipo de gás.
-
-
-
-
-    
-
   ])
 
++ Admitindo-se que o ar é composto por 20% de oxigênio e 80% de nitrogênio, e que esses gases formam moléculas diatômicas, calcule a massa molecular "efetiva" do ar. Avalie o número de moléculas em $1 "cm"^3$ de ar nas condições TPN, Quantas moléculas são de oxigênio e quantas são de nitrogênio?
 
+  #solution([
+    // Massa atômica do nitrogênio
+    #let n-ma-u = 14.0067
+    #let ar-ma-u = 0.2 * 2 * o-ma-u + 0.8 * 2 * n-ma-u
+    #let ar-ma-kg = ar-ma-u * u
+    *Primeira parte:* Seja $N_(a r)$ a quantidade de moléculas de ar presentes em um dado volume $V$, Supondo que o ar é composto por $20%$ de oxigênio ($N_("O"_2) = 0,2 N_(a r)$) e $80%$ de nitrogênio ($N_("N"_2) = 0,8 N_(a r)$), temos:
+
+    $ N_(a r )  = N_("O"_2) + N_("N"_2). $
+
+    Por outro lado, a massa total de ar é:
+
+    $
+      M_(a r) = N_("O"_2) dot m_("O"_2) + N_("N"_2) dot m_("N"_2),
+    $
+    em que $m_("O"_2)$ e $m_("N"_2)$ são respecitvamente as massas moleculares do oxigênio e do nitrogênio. Portanto, a massa molecular efetiva do ar é:
+    $
+      m_(a r) = frac(M_(a r), N_(a r )) &= frac(N_("O"_2) dot m_("O"_2) + N_("N"_2) dot m_("N"_2), N_("O"_2) + N_("N"_2))\
+        m_(a r) &= frac(N_("O"_2), N_( a r)) dot m_("O"_2) + frac(N_("N"_2), N_(a r)) dot m_("N"_2)\
+        m_(a r)&= 0,2 dot m_("O"_2) + 0,8 dot m_("N"_2)\
+        m_(a r) &= 0,2 dot (2 dot #fmt(o-ma-u, sci:false, precision:5)) + 0,8 dot (2 dot #fmt(n-ma-u, sci: false, precision:5)) = #fmt(ar-ma-u, sci:false, precision:5) frac("u", "molécula")\
+        m_(a r) &= (#fmt(ar-ma-u, sci:false, precision:5) frac("u", "molécula")) dot (#fmt(u, precision:4) "kg/u") = #fmt(ar-ma-kg, precision:3) frac("kg", "molécula")
+        &
+    $ 
+
+    *Segunda parte:* Seja $M_(a r) = M_("O"_2) + M_("N"_2)$ a massa total de ar em um volume $V$ em função da massa total de oxigênio ($M_("O"_2)$), que ocupa o volume $V_("O"_2) = 0,2 V$ e da massa total de nitrogênio, que ocupa o volume $V_("N"_2) = 0,8 V$. Então, 
+
+
+    $
+      M_(a r) = M_("O"_2) + M_("N"_2) &arrow.double M_(a r ) &=& rho_("O"_2) dot V_("O"_2) + rho_("N"_2) dot V_("N"_2)\
+        &arrow.double M_(a r) &=& rho_("O"_2) dot (0,2 V) + rho_("N"_2) dot (0,8 V)\
+        &arrow.double M_(a r) &=& (0,2 rho_("O"_2) + 0,8 rho_("N"_2)) dot V\
+        &arrow.double N_(a r) dot m_(a r) &=& (0,2 rho_("O"_2) + 0,8 rho_("N"_2)) dot V\
+        &arrow.double N_(a r)/V &=& frac(0","2 rho_("O"_2) + 0","8 rho_("N"_2) , m_(a r))
+     $
+
+     #let n-ar-1m3 = (0.2 * rho-o2 + 0.8 * rho-n2)/(ar-ma-kg)
+     #let n-ar-1cm3 = n-ar-1m3 * 1e-6
+     #let n-o2-1cm3 = 0.2 * n-ar-1cm3
+     #let n-n2-1cm3 = 9.8 * n-ar-1cm3
+
+     Para determinar a quantidade de moléculas de ar em $1 "cm"^3$:
+     $
+       N_(a r)/V &= frac(0","2 rho_("O"_2) + 0","8 rho_("N"_2) , m_(a r)) = frac(0","2 dot (#fmt(rho-o2) "kg"/"m"^3) + 0","8 dot (#fmt(rho-n2) "kg"/"m"^3) , #fmt(ar-ma-kg) frac("kg", "molécula")) \
+        N_(a r)/V &= #fmt(n-ar-1m3)  "moléculas"/"m"^3\
+        N_(a r)/V &= #fmt(n-ar-1m3)  "moléculas"/"m"^3 dot (frac( 1"m"^3, 10^6 "cm"^3))\
+        N_(a r)/V &= #fmt(n-ar-1cm3)  "moléculas"/"cm"^3
+     $
+    
+    *Terceira parte*: Do total de moléculas de ar, temos:
+      $
+        N_("O"_2)/V = 0,2 dot N_(a r)/V = 0,2 dot #fmt(n-ar-1cm3) "moléculas"/"cm"^3 = #fmt(n-o2-1cm3) " " "moléculas"/"cm"^3\
+        N_("N"_2)/V = 0,8 dot N_(a r)/V = 0,8 dot #fmt(n-ar-1cm3) "moléculas"/"cm"^3 = #fmt(n-n2-1cm3) " " "moléculas"/"cm"^3\
+      $
+  ])
 
