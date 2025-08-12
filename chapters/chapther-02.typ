@@ -9,6 +9,7 @@
 #let uma              = 1.6604e-27 // Unidades de massa atômica em kg
 #let h-ma-u = 1.00797 // Massa atômica do Hidrogênio em uma
 #let o-ma-u = 15.9994 // Massa atômica do Oxigênio em uma
+#let fe-ma-u = 55.847 // Massa atômica do Ferro em uma
 #let rho-h2o-si = 1000 // No SI ou seja, em quilograma por metro cúbico 
 #let rho-h2o = 1 // grama por centímetro cúbico    
 
@@ -20,10 +21,12 @@
 #let gamma-h2 = 8.988e-5
 #let gamma-o2 = 1.42904e-3 
 #let gamma-n2 = 1.25055e-3 
+#let gamma-fe = 7.86
 // Densidades absolutas em kg/m^3
 #let rho-h2 = gamma-h2 * rho-h2o
 #let rho-o2 = gamma-o2 * rho-h2o
 #let rho-n2 = gamma-n2 * rho-h2o
+#let rho-fe = gamma-fe * rho-h2o
 // Massa molecular (mm) da cada gás em unidades de massa atômica
 #let h2-mm-u = 2 * h-ma-u
 #let o2-mm-u = 2 * o-ma-u
@@ -33,6 +36,7 @@
 #let h2-mm-kg = 2 * h-ma-u * uma
 #let o2-mm-kg = 2 * o-ma-u * uma
 #let n2-mm-kg = 2 * n-ma-u * uma
+#let fe-ma-kg = fe-ma-u * uma
 
 // Mass molecular da água em kg
 #let h2o-mm-kg = (2 * h-ma-u + o-ma-u) * uma
@@ -291,7 +295,7 @@
 
     
     Seja a massa molecular da água: $m = 2 m_("H"_2) + m_("O"_2) = 2 dot (#fmt(h-ma-u * uma) "kg") + (#fmt(o-ma-u * uma) "kg") = #fmt(h2o-mm-kg) "kg"$.
-    
+
     Para determinarmos a quantidade de moléculas se evaporando por segundo em cada centímetro quadrado, façamos:
     $
       rho = M/V &arrow.double M = rho dot V arrow.double rho dot (S h)\
@@ -306,3 +310,84 @@
 
   ])
 
+  + Um _mol_ de uma substância é definido como sendo uma quantidade dessa substância expressa em _gramas_, numericamente igual à massa molecular dessa substância em $"u"$. (Quando nos referemos a um elemento químico, e não a um composto, usaremos a massa atômoca em vez da massa molecular.) Verifique que o número de moléculas (ou átomos) em um mol de _qualquer_ substância é sempre o mesmo e é igual a $6,0225 times 10^(23)$. Esse número, chamado _constante de Avogadro_, é uma constante física muito importante.
+
+    #solution([
+      Consideremos uma substância, cuja massa molecular (ou atômica) em $"u"$ seja igual a $m_u$. Tomemos uma quantidade $m$ (em gramas) dessa referida substância, tal que $m$ é numericamente igual a $m_u$. A quantidade $N$ de _componentes_ (átomos ou moléculas) presentes na massa $m$ é tal que:
+
+      #set text(size: 11pt)
+      $
+        m "grama" = N dot (m_u "u") &arrow.double N = frac(m "grama", m_u "u")  arrow.double N = frac(cancel(m) "grama", cancel(m)_u "u")\
+          &arrow.double N = frac(1 "grama", cancel(1 "u") dot display(frac(#fmt(uma, precision:5) "kg" , cancel(1 "u")))) = frac(1 "grama", #fmt(uma, precision:5) cancel("kg") dot display(frac(10^3 "grama", 1 cancel("kg"))))\
+          &arrow.double N = frac(1 cancel("grama"), #fmt(uma * 1e3, precision: 5) cancel("grama")) = frac(1, #fmt(uma * 1e3, precision: 5))\
+          &arrow.double N = #fmt(1/(uma * 1e3), precision: 4) "componentes"
+      $
+    ])
+
+
++ Usando os dados das Tabs 2.2 e A.1, avalie a separação média entre moléculas nas condições TPN, no hidrogênio (gás), na água (líquido) e no ferro (sólido).
+
+  #solution([
+    De forma geral, consideremos uma substância com densidade $rho$ e cuja massa molecular é $m$. Tomemos uma quantidade $N$ de moléculas  dessa substância, ocupando um volume total $V$. Então,
+    $
+      rho = (N dot m)/V
+    $
+    O volume médio $v$ ocupado por cada molécula  é 
+    $
+      v = V/N arrow.double v = m/rho
+    $
+    A fim de determinar a separação média entre as moléculas, temos dois modelos a considerar:
+      #set enum(numbering: "1.") 
+      + Modelo cúbico: cada molécula "ocupa" um espaço cúbico de volume $v$ e lado $l$.
+        Nesse caso, a separação média entre as moléculas é igual ao lado do cubo. Ou seja,
+        $
+          v = m/rho arrow.double l^3 = m/rho arrow.double l = root(3, m/rho)
+        $
+
+      + Modelo esférico: cada molécula "ocupa" um espaço esférico de volume $v$ e diâmetro $d$.
+        Nesse caso, a separação média entre as moléculas é igual ao diâmetro da esfera. Assim,
+        $
+          v = m/rho &arrow.double  (pi d^3)/6 = m/rho arrow.double d = root(3, (6m)/(pi rho))
+        $
+
+      #let substancias = (
+        ("Hidrogênio", h2-mm-kg, rho-h2),
+        ("Água", h2o-mm-kg, rho-h2o),
+        ("Ferro", fe-ma-kg, rho-fe)
+      )
+      #let cubic-model(m, d) = (
+        calc.root(m/d, 3)
+      )
+      #let esphere-model(m,d) = (
+        calc.root( (6*m)/(calc.pi * d), 3)
+      )
+
+      A @tab-separacao-molecular mostra o resultado da aplicação dos dois modelos de cálculo da separação média entre moléculas para: #substancias.map(it => it.at(0)).join(", ").
+
+
+      #set table(
+        stroke: (x, y) => if y == 0 {
+          (top: 0.7pt+black)
+          (bottom: 0.7pt+black)
+        } else {
+          (bottom: 0.7pt+black)
+        },
+        align: center,
+        fill: (x, y) => if y <=1 {
+          gray.lighten(50%)
+        } else if calc.even(y) {
+          gray.lighten(85%)
+        }
+      )
+      #figure(
+        kind: table,
+        caption: [Seperação média entre moléculas de diversas substâncias]
+      )[#table(
+        columns: 5,
+        [], [], [], table.cell(colspan: 2)[Separação ($"m"$)],
+        [Substância], [Massa Molecular ($"kg"$)], [Densidade ($"kg/m"^3$)], [Modelo Cúbico], [Modelo Esférico],
+        [#substancias.at(0).at(0)], [$#fmt(substancias.at(0).at(1), precision:2)$], [$#fmt(substancias.at(0).at(2), precision:2)$], [#fmt(cubic-model(substancias.at(0).at(1), substancias.at(0).at(2)), precision:3)], [#fmt(esphere-model(substancias.at(0).at(1), substancias.at(0).at(2)), precision:3)],
+        [#substancias.at(1).at(0)], [$#fmt(substancias.at(1).at(1), precision:2)$], [$#fmt(substancias.at(1).at(2), sci:true)$], [#fmt(cubic-model(substancias.at(1).at(1), substancias.at(1).at(2)), precision:3)], [#fmt(esphere-model(substancias.at(1).at(1), substancias.at(1).at(2)), precision:3)],
+        [#substancias.at(2).at(0)], [$#fmt(substancias.at(2).at(1), precision:2)$], [$#fmt(substancias.at(2).at(2), precision:2)$], [#fmt(cubic-model(substancias.at(2).at(1), substancias.at(2).at(2)), precision:3)], [#fmt(esphere-model(substancias.at(2).at(1), substancias.at(2).at(2)), precision:3)],
+      )]<tab-separacao-molecular>
+  ])

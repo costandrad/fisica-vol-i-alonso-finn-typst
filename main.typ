@@ -5,7 +5,7 @@
     title: [Física: Volume I - Mecânica],
     author: (
       long: [Marcelo Alonso & Edward Finn],
-      short: [Sobrenome, N.]
+      short: [Alonso, M.; Finn, E.]
     )
   ),
   author: [Igo da Costa Andrade]

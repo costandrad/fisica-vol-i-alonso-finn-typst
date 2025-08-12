@@ -26,7 +26,8 @@
 
   let expoent-str = str(expoent).replace(".", ",")
 
-  if coefficient == 1 {
+  if coefficient == 10 {
+    expoent-str = str(expoent+1).replace(".", ",")
     return $10^(#expoent-str)$
   }
   
@@ -224,7 +225,7 @@
   )
 
   //set math.equation(numbering: "(1)", number-align: bottom)
-
+  set figure.caption(position: top)
 
   // 🧭 Numeração de seções e listas
   set heading(numbering: "1.1.")
