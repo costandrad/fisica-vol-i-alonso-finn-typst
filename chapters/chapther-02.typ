@@ -34,6 +34,9 @@
 #let o2-mm-kg = 2 * o-ma-u * uma
 #let n2-mm-kg = 2 * n-ma-u * uma
 
+// Mass molecular da água em kg
+#let h2o-mm-kg = (2 * h-ma-u + o-ma-u) * uma
+
 + As massas atômicas, representadas na Tab A.1, são expressas em _unidades de massa atômica_, abreviadas por $"u"$. $1 "u"$ é igual a $1,6604 times 10^(-27)$ kg. Calcule, em quilogramas e em gramas, as massas de
 
   #set enum(numbering: "(a)")
@@ -258,13 +261,48 @@
 + A densidade do gás interestelar na nossa galáxia é avaliada em cerca de $10^(-21) "kg" dot "m"^(-3)$. Admitindo-se que esse gás é constituído principalmente de hidrogênio, avalie o número de átomos de hidrogênio por $"cm"^3$. Compare esse resultado com o correspondente obtido para o ar nas condições TPN (Prob. 2.5).
 
   #solution([
-    #let n-gas-1m3 = rho-h2 / h2-mm-kg
+    #let rho-gas = 1e-21
+    #let n-gas-1m3 = rho-gas / h-ma-kg
     #let n-gas-1cm3 = n-gas-1m3 * 1e-6
     $
-      rho_("H"_2) = M/V arrow.double frac(N dot m_("H"_2), V) arrow.double N/V = &frac(rho_("H"_2), m_("H"_2)) = frac(#fmt(rho-h2) "kg"/"m"^3, #fmt(2 * h2-mm-kg) "kg"/"molécula")\
+      rho_("H"_2) = M/V arrow.double frac(N dot m_("H"_2), V) arrow.double N/V = &frac(rho_("H"_2), m_("H"_2)) = frac(#fmt(rho-gas) "kg"/"m"^3, #fmt(2 * h2-mm-kg) "kg"/"molécula")\
       &frac(rho_("H"_2), m_("H"_2)) = #fmt(n-gas-1m3) "moléculas/m"^3\
-      &frac(rho_("H"_2), m_("H"_2)) = #fmt(n-gas-1m3) "moléculas/m"^3 dot (frac( 1"m"^3, 10^6 "cm"^3))\
-      &frac(rho_("H"_2), m_("H"_2)) = #fmt(n-gas-1cm3) "moléculas/cm"^3
+      &frac(rho_("H"_2), m_("H"_2)) = #fmt(n-gas-1m3, precision:2) "moléculas/m"^3 dot (frac( 1"m"^3, 10^6 "cm"^3))\
+      &frac(rho_("H"_2), m_("H"_2)) = #fmt(n-gas-1cm3, sci:false, precision: 2) "moléculas/cm"^3
     $
+  ])
+
++ Um copo de 2 cm de raio contém água. Em duas horas, o nível da água baixa 1mm. Avalie, em gramas por hora, a velocidade de evaporação da água. Quantas moléculas de água estão se evaporando por segundo em cada centímetro quadrado da superfície da água?
+
+  #solution([
+    #let rho-h2o-cgs = 1 // Densidade da água em g/cm^3
+    #let r = 2 // raio em cm
+    #let dhdt = .1/2 // taxa de evaporação em cm/h
+    #let dmdt = rho-h2o-cgs * calc.pi * calc.pow(r, 2) * dhdt
+    #let dNdt = (rho-h2o-cgs / (h2o-mm-kg * 1000)) * dhdt * (1/3600)
+
+    Seja a taxa de evaporação $display(frac(d h, d t)) = display(frac(1 "mm", 2 "h")) = 0,5 "mm/h" = 0,5 "cm/h"$. Então,
+    $
+      rho = M/V &arrow.double M = rho dot V arrow.double M = rho dot (S h) arrow.double M = rho dot (pi r^2 h)\
+      &arrow.double frac(d M, d t) = rho (pi r^2 dot frac(d h, d t))\
+      &arrow.double frac(d M, d t) = (#fmt(rho-h2o-cgs) "g/cm"^3) dot (pi dot (#fmt(r) "cm")^2 dot (#fmt(dhdt, sci: false) "cm/h"))\
+      &arrow.double frac(d M, d t) = #fmt(dmdt, sci: false) "g/h"
+    $
+
+    
+    Seja a massa molecular da água: $m = 2 m_("H"_2) + m_("O"_2) = 2 dot (#fmt(h-ma-u * uma) "kg") + (#fmt(o-ma-u * uma) "kg") = #fmt(h2o-mm-kg) "kg"$.
+    
+    Para determinarmos a quantidade de moléculas se evaporando por segundo em cada centímetro quadrado, façamos:
+    $
+      rho = M/V &arrow.double M = rho dot V arrow.double rho dot (S h)\
+        &arrow.double N dot m = rho S h\
+        &arrow.double frac(d N, d t) dot m = rho S dot frac(d h, d t)\
+        &arrow.double 1/S dot frac(d N, d t) = frac(rho, m) dot frac(d h, d t)\
+        &arrow.double 1/S dot frac(d N, d t) = frac(#fmt(rho-h2o-cgs, sci: false) " g/cm"^3, #fmt(h2o-mm-kg) "kg" dot 1000 "g/kg") dot (#fmt(dhdt, sci:false) "cm"/"h")\
+        &arrow.double 1/S dot frac(d N, d t) = frac(#fmt(rho-h2o-cgs, sci: false) " g/cm"^3, #fmt(h2o-mm-kg) "kg" dot 1000 "g/kg") dot (#fmt(dhdt, sci:false) "cm"/"h")  dot (frac(1 " h", 3600 " s"))\
+        &arrow.double 1/S dot frac(d N, d t) = #fmt(dNdt, precision: 2) "cm/s"
+    $
+
+
   ])
 

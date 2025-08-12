@@ -23,7 +23,12 @@
     return $#coefficient-str$
   }
 
+
   let expoent-str = str(expoent).replace(".", ",")
+
+  if coefficient == 1 {
+    return $10^(#expoent-str)$
+  }
   
   return $#coefficient-str dot 10^(#expoent-str)$
 }
